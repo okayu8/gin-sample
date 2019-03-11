@@ -13,17 +13,21 @@ type C struct {
 
 func main() {
 	router := gin.Default()
-	router.LoadHTMLGlob("templates/*.tmpl")
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl", gin.H{
-			"a": "a",
-			"b": []string{"b_todo1", "b_todo2"},
-			"c": []C{{1, "c_mika"}, {2, "c_risa"}},
-			"d": C{3, "d_mayu"},
-			"e": true,
-			"f": false,
-			"h": true,
-		})
+
+	// This handler will match /user/john but will not match /user/ or /user
+	router.GET("/user/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		c.String(http.StatusOK, "Hello %s", name)
 	})
+
+	// However, this one will match /user/john/ and also /user/john/send
+	// If no other routers match /user/john, it will redirect to /user/john/
+	router.GET("/user/:name/:action", func(c *gin.Context) {
+		name := c.Param("name")
+		action := c.Param("action")
+		message := name + " is " + action
+		c.String(http.StatusOK, message)
+	})
+
 	router.Run(":8082")
 }
