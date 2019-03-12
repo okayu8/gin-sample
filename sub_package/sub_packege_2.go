@@ -4,6 +4,12 @@ import (
 	"fmt"
 )
 
+var You struct {
+	name string
+}
+
 func Sub_write_2() {
-	fmt.Printf("this is sub package2.\n")
+	You.name = "okayu"
+	fmt.Println("this is sub package2.")
+	fmt.Println(You)
 }
