@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+
+	"./sub_package"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +18,9 @@ func main() {
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*.tmpl")
 	router.GET("/index", func(c *gin.Context) {
+		consoleWrite()
+		sub_package.Sub_write()
+		sub_package.Sub_write_2()
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
 			"a": "a",
 			"b": []string{"b_todo1", "b_todo2"},
@@ -26,4 +32,8 @@ func main() {
 		})
 	})
 	router.Run(":8082")
+}
+
+func consoleWrite() {
+	fmt.Printf("hello, console.\n")
 }
